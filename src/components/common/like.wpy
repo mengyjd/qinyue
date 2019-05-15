@@ -1,0 +1,61 @@
+<style lang="scss" scoped>
+  .like-container {
+    font-size: 18px;
+    display: inline-block;
+    .like-icon {
+      width: 16px;
+      height: 14px;
+    }
+    .liek-count {
+      font-size: 9px;
+      margin-left: 2px;
+      vertical-align: text-top;
+    }
+  }
+</style>
+
+<template>
+  <view class="like-container" @tap="handleClick">
+    <image class="like-icon" src="{{likeImgUrl}}"></image>
+    <text class="liek-count">{{likeCountStr}}</text>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Like extends wepy.component {
+    props = {
+      likeCount: {
+        type: Number,
+        default: 0
+      }
+    }
+    data = {
+      liked: false
+    }
+    computed = {
+      likeImgUrl() {
+        const likeImgUrl = '../components/images/icons/liked.png'
+        const unlikedImgUrl = '../components/images/icons/unlike.png'
+        return this.liked ? likeImgUrl : unlikedImgUrl
+      },
+      likeCountStr() {
+        // if (this.likeCount > 999) {
+        //   return '1k+'
+        // } else if (this.likeCount > 9999) {
+        //   return '1w+'
+        // } else if (this.likeCount > 99999) {
+        //   return '10w+'
+        // } else {
+        //   return this.likeCount + 'dd'
+        // }
+        return 123
+      }
+    }
+    methods = {
+      handleClick() {
+        this.liked = !this.liked
+      }
+    }
+  }
+</script>

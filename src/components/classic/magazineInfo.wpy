@@ -1,0 +1,51 @@
+<style lang='scss' scoped>
+  .container {
+    display: flex;
+    align-items: center;
+    .magazine-info {
+      .en-mark {
+        font-size: 16px;
+      }
+      .magazine-num {
+        font-size: 29px;
+        font-weight: bold;
+      }
+    }
+    .split-line {
+      font-size: 21px;
+      margin: 0 4px;
+      vertical-align: text-top;
+    }
+    .date-wrapper {
+      display: flex;
+      flex-direction: column;
+      margin-left: 1px;
+      .date-text {
+        font-size: 12px;
+      }
+      .date-text-year {
+        font-size: 10px;
+      }
+    }
+  }
+</style>
+
+<template>
+  <view class='container inblock'>
+    <view class="magazine-info">
+      <text class="en-mark">No.</text>
+      <text class="magazine-num">17</text>
+    </view>
+    <text class="split-line">|</text>
+    <view class="date-wrapper">
+      <text class="date-text date-text-month">三月</text>
+      <text class="date-text date-text-year">2018</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class magazineInfo extends wepy.page {
+  }
+</script>

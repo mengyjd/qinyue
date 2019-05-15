@@ -1,0 +1,21 @@
+<style lang="scss">
+  .container {
+    height: 100%;
+  }
+</style>
+
+<template>
+  <view class="container">
+    <TitleView></TitleView>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import TitleView from '../components/classic/titleView'
+  export default class Index extends wepy.page {
+    components = {
+      TitleView
+    }
+  }
+</script>

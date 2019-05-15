@@ -1,0 +1,20 @@
+<style lang='scss' scoped>
+  .cotainer {
+    .icon-share {
+      width: 14px;
+      height: 14px;
+    }
+  }
+</style>
+
+<template>
+  <view class='cotainer inblock'>
+    <image class="icon-share" src="../images/icons/share.png" />
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class shareButton extends wepy.component {
+  }
+</script>
