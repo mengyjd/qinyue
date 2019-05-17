@@ -1,0 +1,41 @@
+<style lang='scss' scoped>
+  .side-classic-type-wrapper {
+    position: absolute;
+    top: 270px;
+    left: 17px;
+    width: 23px;
+    height: 71px;
+    .side-img {
+      width: 23px;
+      height: 71px;
+    }
+  }
+</style>
+
+<template>
+  <view class="side-classic-type-wrapper">
+    <image class="side-img" src="{{sideTypeImg}}"></image>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Index extends wepy.component {
+    props = {
+      type: String
+    }
+    computed = {
+      sideTypeImg() {
+        if (this.type === 100) {
+          return '../components/images/icons/side_movie.png'
+        } else if (this.type === 200) {
+          return '../components/images/icons/side_music.png'
+        } else if (this.type === 300) {
+          return '../components/images/icons/side_poem.png'
+        } else {
+          return ''
+        }
+      }
+    }
+  }
+</script>

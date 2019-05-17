@@ -21,10 +21,10 @@
 <template>
   <view class='title-wrapper'>
     <view class="left">
-      <MagazineInfo></MagazineInfo>
+      <MagazineInfo :magazineIndex.sync="magazineIndex" :pubdate.sync="magazineDate"></MagazineInfo>
     </view>
     <view class="rihgt">
-      <Like class="like"></Like>
+      <Like class="like" :likeStatus.sync="likeStatus" :likeCount.sync="likeCount"></Like>
       <ShareButton></ShareButton>
     </view>
   </view>
@@ -35,8 +35,13 @@
   import Like from '@/components/common/like'
   import MagazineInfo from './magazineInfo'
   import ShareButton from './shareButton'
-
   export default class Index extends wepy.component {
+    props = {
+      magazineIndex: Number,
+      magazineDate: String,
+      likeStatus: Boolean,
+      likeCount: Number
+    }
     components = {
       Like,
       MagazineInfo,

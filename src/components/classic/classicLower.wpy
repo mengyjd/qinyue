@@ -1,0 +1,40 @@
+<style lang='scss' scoped>
+  .lower-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 30rpx;
+    .describe-wrapper {
+      font-size: 17px;
+      padding: 0 50px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>
+
+<template>
+  <view class="lower-container">
+    <view class="describe-wrapper">
+      <text class="describe-text">{{desc}}</text>
+    </view>
+    <Control :title.sync="title"></Control>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Control from './control'
+  export default class Index extends wepy.component {
+    props = {
+      desc: String,
+      title: String
+    }
+    components = {
+      Control
+    }
+  }
+</script>

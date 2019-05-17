@@ -1,0 +1,27 @@
+<style lang='scss' scoped>
+
+</style>
+
+<template>
+  <view class=''>
+  书单
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+    components = {
+    }
+
+    data = {
+    }
+
+    computed = {
+    }
+
+    methods = {
+    }
+  }
+</script>

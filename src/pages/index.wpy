@@ -1,21 +1,66 @@
-<style lang="scss">
+<style lang="scss" scoped>
   .container {
     height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 </style>
 
 <template>
   <view class="container">
-    <TitleView></TitleView>
+    <TitleView :magazineIndex.sync="magazineIndex" :magazineDate.sync="magazineDate" :likeStatus.sync="likeStatus" :likeCount.sync="likeCount"></TitleView>
+    <ClassicUpper :imageUrl.sync="image" :type.sync="type"></ClassicUpper>
+    <ClassicSide :type.sync="type"></ClassicSide>
+    <ClassicLower :desc.sync="content" :title.sync="title"></ClassicLower>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import TitleView from '../components/classic/titleView'
+  import Picture from '../components//classic/picture'
+  import Music from '../components//classic/music'
+  import ClassicUpper from '../components//classic/classicUpper'
+  import ClassicLower from '../components//classic/classicLower'
+  import ClassicSide from '../components//classic/classicSide'
+  import {
+    magazineLatest
+  } from '@/api/magazine.js'
   export default class Index extends wepy.page {
     components = {
-      TitleView
+      TitleView,
+      Picture,
+      Music,
+      ClassicUpper,
+      ClassicLower,
+      ClassicSide
+    }
+    data = {
+      magazineIndex: 0, // 期刊期号
+      magazineDate: '', // 期刊发布日期
+      likeStatus: 0, // 期刊点赞状态
+      likeCount: 0, // 期刊点赞数量
+      type: 0, // 期刊类型,这里的类型分为:100 电影 200 音乐 300 句子
+      content: '', // 期刊内容
+      id: 0, // 期刊在数据中序号，供点赞使用
+      title: '', // 期刊题目
+      image: '' // 期刊图片
+    }
+    async onLoad() {
+      const {
+        data
+      } = await magazineLatest()
+      this.magazineIndex = data.index
+      this.magazineDate = data.pubdate
+      this.likeStatus = data.like_status
+      this.likeCount = data.fav_nums
+      this.type = data.type
+      this.content = data.content
+      this.image = data.image
+      this.title = data.title
+      this.id = data.id
+      this.$apply()
+      console.log('data=', data)
     }
   }
 </script>

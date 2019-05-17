@@ -1,0 +1,40 @@
+@mixin absCenter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+@mixin absColumnCenter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin columnCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@mixin left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

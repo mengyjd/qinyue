@@ -8,7 +8,7 @@
 </style>
 
 <template>
-  <view class='cotainer inblock'>
+  <view class='cotainer inblock' @tap="handleShare">
     <image class="icon-share" src="../images/icons/share.png" />
   </view>
 </template>
@@ -16,5 +16,13 @@
 <script>
   import wepy from 'wepy'
   export default class shareButton extends wepy.component {
+    methods = {
+      handleShare() {
+        wx.showShareMenu({
+          withShareTicket: true
+        })
+        console.log('share')
+      }
+    }
   }
 </script>

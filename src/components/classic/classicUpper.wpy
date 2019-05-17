@@ -1,0 +1,30 @@
+<style lang='scss' scoped>
+</style>
+
+<template>
+  <view class='upper-container'>
+    <Music wx:if="{{isMusic}}" :imageUrl.sync="imageUrl"></Music>
+    <Picture wx:else :imageUrl.sync="imageUrl"></Picture>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Picture from './picture'
+  import Music from './music'
+  export default class Index extends wepy.component {
+    props = {
+      imageUrl: String,
+      type: 0
+    }
+    components = {
+      Picture,
+      Music
+    }
+    computed = {
+      isMusic() {
+        return this.type === 200
+      }
+    }
+  }
+</script>

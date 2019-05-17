@@ -1,5 +1,11 @@
+import {
+  host
+} from '@/config'
 import wepy from 'wepy'
-import {host} from '@/config'
-export function magazineLatest() {
-  wepy.request(`${host.baseUrl}classic/latest`)
+// 获取最新一期期刊
+export async function magazineLatest() {
+  return wepy.request({
+    url: `${host.baseUrl}classic/latest`,
+    method: 'GET'
+  })
 }

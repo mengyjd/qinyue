@@ -25,9 +25,10 @@
   import wepy from 'wepy'
   export default class Like extends wepy.component {
     props = {
-      likeCount: {
+      likeCount: Number,
+      likeStatus: {
         type: Number,
-        default: 0
+        default: false
       }
     }
     data = {
@@ -37,24 +38,23 @@
       likeImgUrl() {
         const likeImgUrl = '../components/images/icons/liked.png'
         const unlikedImgUrl = '../components/images/icons/unlike.png'
-        return this.liked ? likeImgUrl : unlikedImgUrl
+        return this.likeStatus ? likeImgUrl : unlikedImgUrl
       },
       likeCountStr() {
-        // if (this.likeCount > 999) {
-        //   return '1k+'
-        // } else if (this.likeCount > 9999) {
-        //   return '1w+'
-        // } else if (this.likeCount > 99999) {
-        //   return '10w+'
-        // } else {
-        //   return this.likeCount + 'dd'
-        // }
-        return 123
+        if (this.likeCount > 999) {
+          return '1k+'
+        } else if (this.likeCount > 9999) {
+          return '1w+'
+        } else if (this.likeCount > 99999) {
+          return '10w+'
+        } else {
+          return this.likeCount
+        }
       }
     }
     methods = {
       handleClick() {
-        this.liked = !this.liked
+        this.likeStatus = !this.likeStatus
       }
     }
   }
