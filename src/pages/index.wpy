@@ -24,7 +24,7 @@
   import ClassicLower from '../components//classic/classicLower'
   import ClassicSide from '../components//classic/classicSide'
   import {
-    magazineLatest
+    getClassicLatest
   } from '@/api/magazine.js'
   export default class Index extends wepy.page {
     components = {
@@ -49,7 +49,7 @@
     async onLoad() {
       const {
         data
-      } = await magazineLatest()
+      } = await getClassicLatest()
       this.magazineIndex = data.index
       this.magazineDate = data.pubdate
       this.likeStatus = data.like_status
@@ -60,7 +60,6 @@
       this.title = data.title
       this.id = data.id
       this.$apply()
-      console.log('data=', data)
     }
   }
 </script>
