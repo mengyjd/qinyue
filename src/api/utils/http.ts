@@ -54,7 +54,7 @@ export function request(options: RequestParam) {
       })
       .then(res => {
         if (res.statusCode.toString().startsWith(2)) {
-          resolve(res)
+          resolve(res.data)
         } else {
           showErrorToast(res.data.error_code) // 请求失败时,显示错误提示
         }
