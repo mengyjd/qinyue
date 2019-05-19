@@ -44,7 +44,7 @@
   </view>
 </template>
 
-<script>
+<script lang="typescript">
   import wepy from 'wepy'
   export default class magazineInfo extends wepy.component {
     props = {

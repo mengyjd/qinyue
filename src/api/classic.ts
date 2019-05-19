@@ -12,7 +12,7 @@ export async function getClassicLatest() {
  * @param {number} index 当前期刊的期号
  * @param {string} model pre or next
  */
-export async function recentClassic(index, model) {
+export async function recentClassic(index: number, model: string) {
   const url = `/classic/${index}/${model}`
   return request({
     url

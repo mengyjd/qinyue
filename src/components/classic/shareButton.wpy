@@ -13,7 +13,7 @@
   </view>
 </template>
 
-<script>
+<script lang="typescript">
   import wepy from 'wepy'
   export default class shareButton extends wepy.component {
     methods = {

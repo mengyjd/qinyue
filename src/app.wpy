@@ -2,13 +2,13 @@
   @import './styles/global';
 </style>
 
-<script>
+<script lang="typescript">
   import wepy from 'wepy'
   import 'wepy-async-function'
   import {
     setStore
   } from 'wepy-redux'
-  import configStore from './store'
+  import configStore from './store/index'
 
   const store = configStore()
   setStore(store)
@@ -57,11 +57,13 @@
       this.use('requestfix')
       this.use('promisify')
     }
+
     getUserInfo(cb) {
       const that = this
       if (this.globalData.userInfo) {
         return this.globalData.userInfo
       }
+
       wepy.getUserInfo({
         success(res) {
           that.globalData.userInfo = res.userInfo

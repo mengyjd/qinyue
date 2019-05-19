@@ -29,7 +29,7 @@
   </view>
 </template>
 
-<script>
+<script lang="typescript">
   import wepy from 'wepy'
   export default class Index extends wepy.component {
     props = {

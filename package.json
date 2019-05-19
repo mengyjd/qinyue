@@ -17,6 +17,7 @@
   "author": "mengyjd <178533869@qq.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/wepy": "^1.7.5",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-promise": "^0.5.3",
