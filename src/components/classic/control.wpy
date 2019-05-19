@@ -1,9 +1,13 @@
 <style lang='scss' scoped>
   .control-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40rpx;
+    margin: 0 auto;
     width: 590rpx;
     height: 40px;
     background-color: #f7f7f7;
-    padding: 0 10px;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -11,19 +15,20 @@
     .icon {
       width: 12px;
       height: 17px;
+      padding: 2px 10px;
     }
     .classic-title {
       align-self: center;
-      font-size: 12px;
+      font-size: 14px;
     }
   }
 </style>
 
 <template>
   <view class='control-wrapper'>
-    <image class="icon" src="../images/icons/pre.png"></image>
+    <image @tap="tapLeft" class="icon" src="{{leftArrowUrl}}"></image>
     <text class="classic-title">{{title}}</text>
-    <image class="icon" src="../images/icons/next.png"></image>
+    <image @tap="tapRight" class="icon" src="{{rightArrowUrl}}"></image>
   </view>
 </template>
 
@@ -31,7 +36,41 @@
   import wepy from 'wepy'
   export default class Index extends wepy.component {
     props = {
-      title: String
+      title: String,
+      leftDisabled: {
+        type: Boolean,
+        default: true
+      },
+      rightDisabled: {
+        type: Boolean,
+        default: false
+      }
+    }
+    computed = {
+      leftArrowUrl() {
+        const leftArrow = '../components/images/icons/left_arrow.png'
+        const leftArrowHighlight = '../components/images/icons/left_arrow_highlight.png'
+        return this.leftDisabled ? leftArrow : leftArrowHighlight
+      },
+      rightArrowUrl() {
+        const rightArrow = '../components/images/icons/right_arrow.png'
+        const rihgtArrowHighlight = '../components/images/icons/right_arrow_highlight.png'
+        return this.rightDisabled ? rightArrow : rihgtArrowHighlight
+      }
+    }
+    methods = {
+      tapLeft() {
+        if (this.leftDisabled) {
+          return
+        }
+        this.$emit('onLeft')
+      },
+      tapRight() {
+        if (this.rightDisabled) {
+          return
+        }
+        this.$emit('onRight')
+      }
     }
   }
 </script>

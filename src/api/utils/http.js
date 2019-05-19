@@ -21,18 +21,19 @@ const errorTips = {
  * 对请求进行基本配置
  * @param {Object} options 请求配置
  * @param {string} options.url 请求url
- * @param {string} options.method 请求方法
+ * @param {string} options.method 请求方法 default GET
  * @return {Promise} 返回res.data对象
  */
 export function request(options) {
   return new Promise((resolve, reject) => {
     wepy.request({
       url: `${host.baseUrl}${options.url}`,
-      method: options.method,
+      method: options.method || 'GET',
       'content-type': 'application/json',
       header: {
-        appkey: 'RdshydjBvcYZhMZC'
-      }
+        appkey: host.appkey
+      },
+      data: options.data
     }).then((res) => {
       if (res.statusCode.toString().startsWith(2)) {
         resolve(res)

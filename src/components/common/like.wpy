@@ -31,9 +31,6 @@
         default: false
       }
     }
-    data = {
-      liked: false
-    }
     computed = {
       likeImgUrl() {
         const likeImgUrl = '../components/images/icons/liked.png'
@@ -54,7 +51,14 @@
     }
     methods = {
       handleClick() {
+        // 改变likeCount数量
+        if (this.likeStatus) {
+          this.likeCount -= 1
+        } else {
+          this.likeCount += 1
+        }
         this.likeStatus = !this.likeStatus
+        this.$emit('clickLike', this.likeStatus)
       }
     }
   }

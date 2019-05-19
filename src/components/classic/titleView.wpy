@@ -6,6 +6,7 @@
     justify-content: space-between;
     padding: 0 15px;
     box-sizing: border-box;
+    border-top: 1px solid #f5f5f5;
     .left {
       display: flex;
       align-items: center;
@@ -24,7 +25,7 @@
       <MagazineInfo :magazineIndex.sync="magazineIndex" :pubdate.sync="magazineDate"></MagazineInfo>
     </view>
     <view class="rihgt">
-      <Like class="like" :likeStatus.sync="likeStatus" :likeCount.sync="likeCount"></Like>
+      <Like class="like" @clickLike.user="clickLike" :likeStatus.sync="likeStatus" :likeCount.sync="likeCount"></Like>
       <ShareButton></ShareButton>
     </view>
   </view>
@@ -46,6 +47,11 @@
       Like,
       MagazineInfo,
       ShareButton
+    }
+    methods = {
+      clickLike(likeStatus) {
+        this.$emit('clickLike', likeStatus)
+      }
     }
   }
 </script>

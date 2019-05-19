@@ -1,65 +1,141 @@
 <style lang="scss" scoped>
-  .container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 </style>
 
 <template>
   <view class="container">
-    <TitleView :magazineIndex.sync="magazineIndex" :magazineDate.sync="magazineDate" :likeStatus.sync="likeStatus" :likeCount.sync="likeCount"></TitleView>
-    <ClassicUpper :imageUrl.sync="image" :type.sync="type"></ClassicUpper>
-    <ClassicSide :type.sync="type"></ClassicSide>
-    <ClassicLower :desc.sync="content" :title.sync="title"></ClassicLower>
+    <TitleView @clickLike.user="clickLike"
+               :magazineIndex.sync="index"
+               :magazineDate.sync="pubdate"
+               :likeStatus.sync="likeStatus"
+               :likeCount.sync="likeCount"></TitleView>
+    <view hidden="{{type == 200}}">
+      <Picture :imageUrl.sync="image"
+               :content.sync="content"
+               :type.sync="type"></Picture>
+    </view>
+    <view hidden="{{type != 200}}">
+      <Music :imageUrl.sync="image"
+             :content.sync="content"></Music>
+    </view>
+    <Control @onLeft.user="onNext"
+             @onRight.user="onPrevious"
+             :title.sync="title"
+             :rightDisabled.sync="isFirst"
+             :leftDisabled.sync="isLast"></Control>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import TitleView from '../components/classic/titleView'
-  import Picture from '../components//classic/picture'
-  import Music from '../components//classic/music'
-  import ClassicUpper from '../components//classic/classicUpper'
-  import ClassicLower from '../components//classic/classicLower'
-  import ClassicSide from '../components//classic/classicSide'
-  import {
-    getClassicLatest
-  } from '@/api/magazine.js'
+  import Picture from '../components/classic/picture'
+  import Music from '../components/classic/music'
+  import Control from '../components/classic/control'
+  import { like } from '@/api/like'
+  import { getClassicLatest, recentClassic } from '@/api/classic'
+
   export default class Index extends wepy.page {
     components = {
       TitleView,
       Picture,
       Music,
-      ClassicUpper,
-      ClassicLower,
-      ClassicSide
+      Control
     }
+
     data = {
-      magazineIndex: 0, // 期刊期号
-      magazineDate: '', // 期刊发布日期
-      likeStatus: 0, // 期刊点赞状态
-      likeCount: 0, // 期刊点赞数量
-      type: 0, // 期刊类型,这里的类型分为:100 电影 200 音乐 300 句子
-      content: '', // 期刊内容
-      id: 0, // 期刊在数据中序号，供点赞使用
-      title: '', // 期刊题目
-      image: '' // 期刊图片
+      hidden: true,
+      classicData: {},
+      isLast: true,
+      isFirst: false,
+      firstClassicIndex: 1, // 期刊第一期期号
+      lastClassicIndex: 0 // 期刊最新一期的期号
     }
+
+    computed = {
+      // 期号
+      index() {
+        return this.classicData.index
+      },
+      // 发布日期
+      pubdate() {
+        return this.classicData.pubdate
+      },
+      // 是否点赞
+      likeStatus() {
+        return this.classicData.like_status
+      },
+      // 点赞次数
+      likeCount() {
+        return this.classicData.fav_nums
+      },
+      // 期刊类型,这里的类型分为:100 电影 200 音乐 300 句子
+      type() {
+        return this.classicData.type
+      },
+      // 期刊内容
+      content() {
+        return this.classicData.content
+      },
+      // 图片url
+      image() {
+        return this.classicData.image
+      },
+      // 期刊标题
+      title() {
+        return this.classicData.title
+      },
+      // 期刊在数据中序号，供点赞使用
+      id() {
+        return this.classicData.id
+      }
+    }
+
     async onLoad() {
-      const {
-        data
-      } = await getClassicLatest()
-      this.magazineIndex = data.index
-      this.magazineDate = data.pubdate
-      this.likeStatus = data.like_status
-      this.likeCount = data.fav_nums
-      this.type = data.type
-      this.content = data.content
-      this.image = data.image
-      this.title = data.title
-      this.id = data.id
+      const { data } = await getClassicLatest()
+      this.classicData = data
+      this.lastClassicIndex = data.index // 保存最新的期号
       this.$apply()
+    }
+
+    methods = {
+      /**
+       * 点击下一个按钮
+       */
+      onNext() {
+        this.updateClassic('next')
+      },
+
+      /**
+       * 点击上一个按钮
+       */
+      onPrevious() {
+        this.updateClassic('previous')
+      },
+      // 点击喜欢按钮时根据当前状态向服务器发送请求,喜欢或者取消喜欢
+      clickLike(likeStatus) {
+        like(likeStatus, this.id, this.type)
+      }
+    }
+    /**
+     * 获取当前期刊的上一期或者下一期
+     */
+    async updateClassic(nextOrPrevious) {
+      const { data } = await recentClassic(this.index, nextOrPrevious)
+      this.classicData = data
+      this.updateControlBtnState(data.index)
+      this.$apply()
+    }
+    /**
+     * 改变切换期刊按钮的状态 : 是否禁用
+     */
+    updateControlBtnState(index) {
+      this.isFirst = index === this.firstClassicIndex
+      this.isLast = index === this.lastClassicIndex
     }
   }
 </script>

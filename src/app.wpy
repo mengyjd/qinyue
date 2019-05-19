@@ -1,5 +1,4 @@
 <style lang="scss">
-  @import './styles/reset';
   @import './styles/global';
 </style>
 
@@ -10,6 +9,7 @@
     setStore
   } from 'wepy-redux'
   import configStore from './store'
+
   const store = configStore()
   setStore(store)
   export default class extends wepy.app {

@@ -12,9 +12,9 @@
       }
     }
     .split-line {
-      font-size: 21px;
-      margin: 0 4px;
-      vertical-align: text-top;
+      border-left: 1px solid black;
+      height: 21px;
+      margin: 0 6px;
     }
     .date-wrapper {
       display: flex;
@@ -34,11 +34,11 @@
   <view class='container inblock'>
     <view class="magazine-info">
       <text class="en-mark">No.</text>
-      <text class="magazine-index">{{magazineIndex}}</text>
+      <text class="magazine-index">{{formatMagazineIndex}}</text>
     </view>
-    <text class="split-line">|</text>
+    <view class="split-line"></view>
     <view class="date-wrapper">
-      <text class="date-text date-text-month">{{month}}</text>
+      <text class="date-text date-text-month">{{monthStr}}</text>
       <text class="date-text date-text-year">{{year}}</text>
     </view>
   </view>
@@ -54,6 +54,12 @@
         default: ''
       }
     }
+    data = {
+      month: [
+        '一月', '二月', '三月', '四月', '五月', '六月',
+        '七月', '八月', '九月', '十月', '十一月', '十二月'
+      ]
+    }
     computed = {
       splitDate() {
         return this.pubdate.split('-')
@@ -61,32 +67,12 @@
       year() {
         return this.splitDate[0]
       },
-      month() {
-        return this.translateMonthToCnFromNum(this.splitDate[1])
+      monthStr() {
+        return this.month[parseInt(this.splitDate[1]) - 1]
+      },
+      formatMagazineIndex() {
+        return this.magazineIndex ? this.magazineIndex.toString().padStart(2, 0) : ''
       }
-    }
-    onLoad() {
-      setTimeout(() => {
-        console.log('magazineIndex', this.magazineIndex)
-      }, 1500)
-    }
-    // 将月份从数字转换成中文 03 >> 三月
-    translateMonthToCnFromNum(month) {
-      const date = {
-        1: '一月',
-        2: '二月',
-        3: '三月',
-        4: '四月',
-        5: '五月',
-        6: '六月',
-        7: '七月',
-        8: '八月',
-        9: '九月',
-        10: '十月',
-        11: '十一月',
-        12: '十二月'
-      }
-      return date[parseInt(month)]
     }
   }
 </script>

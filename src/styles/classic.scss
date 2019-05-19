@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .classic-img-container {
+    position: relative;
+    width: 750rpx;
+    height: 500rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tag {
+    width: 46rpx;
+    height: 142rpx;
+    position: relative;
+    bottom: 60rpx;
+    right: 310rpx;
+  }
+
+  .content {
+    display: inline-block;
+    max-width: 550rpx;
+    font-size: 18px;
+  }
+}
