@@ -20,3 +20,15 @@ export async function like(liked: boolean, art_id: number, category: string) {
   })
 }
 
+/**
+ * 获取期刊的喜欢信息 喜欢的数量及状态
+ * @param {number} category
+ * @param {number} id
+ * @returns {object} { fav_nums: 1, id: 1, like_status: 1 }
+ */
+export async function getLikeInfo(category: number, id: number) {
+  return request({
+    url: `/classic/${category}/${id}/favor`
+  })
+}
+

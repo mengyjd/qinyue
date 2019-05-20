@@ -20,6 +20,8 @@
     </view>
     <view hidden="{{type != 200}}">
       <Music :imageUrl.sync="image"
+             :musicUrl.sync="musicUrl"
+             :classicTitle.sync="title"
              :content.sync="content"></Music>
     </view>
     <Control @onLeft.user="onNext"
@@ -96,6 +98,9 @@
       // 期刊在数据中序号，供点赞使用
       id() {
         return this.classicData.id
+      },
+      musicUrl() {
+        return this.classicData.url
       }
     }
 
@@ -122,9 +127,10 @@
       },
 
       // 点击喜欢按钮时根据当前状态向服务器发送请求,喜欢或者取消喜欢
-      clickLike(likeStatus: boolean) {
-        like(likeStatus, this.id, this.type)
-        likeModel.updateLocalLikeState(this.index)
+      // 并将结果保存到本地
+      async clickLike(likeStatus: boolean) {
+        await like(likeStatus, this.id, this.type)
+        await likeModel.updateLocalLikeState(this.index, this.id, this.type)
       }
     }
 

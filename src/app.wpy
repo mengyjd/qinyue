@@ -19,6 +19,7 @@
         'pages/bookList',
         'pages/myLike'
       ],
+      requiredBackgroundModes: ['audio'],
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
