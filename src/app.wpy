@@ -1,5 +1,6 @@
 <style lang="scss">
-  @import './styles/global';
+  @import './assets/styles/global';
+  @import './assets/styles/iconfonts/iconfont';
 </style>
 
 <script lang="typescript">
@@ -32,20 +33,20 @@
         list: [{
           pagePath: 'pages/index',
           text: '流行',
-          iconPath: './images/icon/classic.png',
-          selectedIconPath: './images/icon/classic@highlight.png'
+          iconPath: './assets/images/icon/classic.png',
+          selectedIconPath: './assets/images/icon/classic@highlight.png'
         },
         {
           pagePath: 'pages/bookList',
           text: '书单',
-          iconPath: './images/icon/book.png',
-          selectedIconPath: './images/icon/book@highlight.png'
+          iconPath: './assets/images/icon/book.png',
+          selectedIconPath: './assets/images/icon/book@highlight.png'
         },
         {
           pagePath: 'pages/myLike',
           text: '喜欢',
-          iconPath: './images/icon/my.png',
-          selectedIconPath: './images/icon/my@highlight.png'
+          iconPath: './assets/images/icon/my.png',
+          selectedIconPath: './assets/images/icon/my@highlight.png'
         }
         ]
       }

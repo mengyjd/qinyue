@@ -1,5 +1,5 @@
 <style lang='scss' scoped>
-@import '../../styles/classic';
+@import '../assets/styles/classic';
   .classic-img {
     width: 750rpx;
     height: 500rpx;
@@ -26,8 +26,8 @@
     }
     computed = {
       tagImg() {
-        const movieTag = '../components/images/icons/side_movie.png'
-        const poemTag = '../components/images/icons/side_poem.png'
+        const movieTag = '../components/assets/images/icons/side_movie.png'
+        const poemTag = '../components/assets/images/icons/side_poem.png'
         if (this.type === 100) {
           return movieTag
         } else {

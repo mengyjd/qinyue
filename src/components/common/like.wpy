@@ -1,27 +1,31 @@
 <style lang="scss" scoped>
-  .like-container {
-    font-size: 18px;
-    display: inline-block;
-    .like-icon {
-      width: 16px;
-      height: 14px;
-    }
-    .liek-count {
-      font-size: 9px;
-      margin-left: 2px;
-      vertical-align: text-top;
-    }
+.like-container {
+  font-size: 18px;
+  display: inline-block;
+  .like-icon {
+    width: 16px;
+    height: 14px;
   }
+  .liek-count {
+    font-size: 9px;
+    margin-left: 2px;
+    vertical-align: text-top;
+  }
+}
+.icon-liked {
+  color: #e99399;
+}
 </style>
 
 <template>
-  <view class="like-container" @tap="handleClick">
-    <image class="like-icon" src="{{likeImgUrl}}"></image>
+  <view class="like-container"
+        @tap="handleClick">
+    <view class="iconfont {{likeStatus ? 'icon-liked' : 'icon-unlike'}}"></view>
     <text class="liek-count">{{likeCountStr}}</text>
   </view>
 </template>
 
-<script lang="typescript">
+<script>
   import wepy from 'wepy'
   export default class Like extends wepy.component {
     props = {
@@ -31,12 +35,8 @@
         default: false
       }
     }
+
     computed = {
-      likeImgUrl() {
-        const likeImgUrl = '../components/images/icons/liked.png'
-        const unlikedImgUrl = '../components/images/icons/unlike.png'
-        return this.likeStatus ? likeImgUrl : unlikedImgUrl
-      },
       likeCountStr() {
         if (this.likeCount > 999) {
           return '1k+'
@@ -49,6 +49,7 @@
         }
       }
     }
+
     methods = {
       handleClick() {
         // 改变likeCount数量

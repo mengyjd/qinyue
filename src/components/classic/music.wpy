@@ -1,11 +1,12 @@
 <style lang='scss' scoped>
-@import '../../styles/classic';
+@import '../assets/styles/classic';
+$rotationTime: 20s; // 音乐图片旋转一周的时间
 .music-img {
   width: 420rpx;
   height: 420rpx;
   display: inline-block;
   border-radius: 50%;
-  animation: rotate 8s linear infinite;
+  animation: rotate $rotationTime linear infinite;
 }
 .icon-wrapper {
   position: absolute;
@@ -52,7 +53,7 @@
       </view>
     </view>
     <image class="tag"
-           src="../images/icons/side_music.png"></image>
+           src="../assets/images/icons/side_music.png"></image>
     <text class="content">{{content}}</text>
   </view>
 </template>
@@ -77,8 +78,8 @@
       },
 
       musicControlIcon() {
-        const playIcon = '../components/images/icons/play.png'
-        const pauseIcon = '../components/images/icons/pause.png'
+        const playIcon = '../components/assets/images/icons/play.png'
+        const pauseIcon = '../components/assets/images/icons/pause.png'
         return this.playing ? pauseIcon : playIcon
       },
 
