@@ -1,27 +1,217 @@
 <style lang='scss' scoped>
+.book-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #f9f9f9;
+}
 
+.bgwhite {
+  background-color: #fff;
+}
+
+.search-bar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.search-container {
+  margin-top: 54px;
+  flex-grow: 1;
+  background-color: #fff;
+}
+
+.tag {
+  display: flex;
+  justify-content: center;
+  padding-top: 74px;
+  padding-bottom: 12px;
+  background-color: #f9f9f9;
+  .tag-img {
+    width: 54px;
+    height: 16px;
+  }
+}
+
+.loading-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pull-up-loading {
+  position: relative;
+  width: 100%;
+  height: 55px;
+}
 </style>
 
 <template>
-  <view class=''>
-  书单
+  <view class="book-list {{showSearchResult ? 'bgwhite' : ''}}">
+    <!-- 搜索框 -->
+    <SearchBar class="search-bar"
+               @searchBook.user="searchBook"
+               @tapSearchBar.user="tapSearchBar"></SearchBar>
+    <!-- 搜索页 -->
+    <view class="search-container"
+          hidden="{{showBookList || showSearchResult}}">
+      <SearchInputPage class="input-page-wrapper"
+                       @searchBook.user="searchBook"
+                       :historyList.sync="historyList"
+                       :hotKeywords.sync="hotKeywords"></SearchInputPage>
+    </view>
+    <view class="tag"
+          wx:if="{{showBookList}}">
+      <image class="tag-img"
+             src="../components/assets/images/icons/featured.png"
+             lazy-load="false">
+      </image>
+    </view>
+    <!-- 书籍列表 -->
+    <view>
+      <BookList :bookList.sync="books"
+                wx:if="{{showBookList}}"></BookList>
+      <SearchBookList :bookList.sync="serachResult"
+                      :isBrief.sync="isBrief"
+                      wx:if="{{showSearchResult}}"></SearchBookList>
+    </view>
+    <view class="loading-wrapper  {{isPullUpLoading ? 'pull-up-loading' : ''}}"
+          wx:if="{{isPlayLoading}}">
+      <Loading class="loading"
+               :isPlaying.sync="isPlayLoading"></Loading>
+    </view>
   </view>
 </template>
 
-<script lang="typescript">
+<script>
   import wepy from 'wepy'
+  import SearchBar from '../components/bookList/searchBar'
+  import SearchInputPage from '../components/bookList/searchInputPage'
+  import BookList from '../components/bookList/bookList'
+  import Loading from '../components/common/loading'
+  import BookModel from '../models/book'
+  import SearchModel from '../models/search'
+
+  const bookModel = new BookModel()
+  const searchModel = new SearchModel()
 
   export default class Index extends wepy.page {
+    config = {
+      enablePullDownRefresh: true
+    }
+
     components = {
+      SearchBar,
+      SearchInputPage,
+      BookList,
+      SearchBookList: BookList,
+      Loading
     }
 
     data = {
+      showBookList: true,
+      isBrief: true,
+      showSearchResult: false,
+      isPlayLoading: false,
+      isPullUpLoading: false, // 是否为上拉加载动画
+      books: [],
+      historyList: [],
+      hotKeywords: [],
+      serachResult: [],
+      start: 0, // 上拉加载时查询记录的起始位置
+      total: 0, // 所有的搜索结果数,
+      keyword: '', // 搜索关键词
+      ablePullDown: false // 能否执行上拉加载动作,取到数据后为true
     }
 
     computed = {
+      // 搜索结果是否已全部查询
+      isCompeleted() {
+        return this.start + 20 >= this.total
+      }
+    }
+
+    async onLoad() {
+      this.getFeatureBooks()
+      this.getHotSearchList()
+      this.getSearchHistoryList()
+    }
+
+    // 用户触发上拉事件
+    onReachBottom() {
+      if (!this.showSearchResult || this.isCompeleted || !this.ablePullDown) {
+        return
+      }
+      this.ablePullDown = false
+      this.isPullUpLoading = true
+      const continueSearch = this.methods.searchBook.bind(this, {
+        bookName: this.keyword,
+        start: this.start + 20
+      })
+      continueSearch()
     }
 
     methods = {
+      tapSearchBar(isEdit) {
+        this.showBookList = !isEdit
+        if (!isEdit) {
+          // 点击取消按钮时重置状态
+          this.resetState()
+        }
+      },
+
+      /**
+       * 搜索书籍
+       */
+      async searchBook(options) {
+        this.isPlayLoading = true
+        this.showBookList = false
+        this.showSearchResult = true
+        const data = await searchModel.searchBook(options.bookName, options.start)
+        this.serachResult = [...this.serachResult, ...data.books]
+        this.isPlayLoading = false
+        this.start = data.start
+        this.total = data.total
+        this.keyword = options.bookName
+        this.ablePullDown = true
+        this.isPullUpLoading = false
+        this.$apply()
+      }
+    }
+
+    async continueSearch() {}
+
+    async getFeatureBooks() {
+      this.isPlayLoading = true
+      const data = await bookModel.getFeatureBooks()
+      this.books = data
+      this.isPlayLoading = false
+      this.$apply()
+    }
+
+    async getHotSearchList() {
+      this.hotKeywords = await searchModel.getHotSearchKeywords()
+      this.$apply()
+    }
+
+    getSearchHistoryList() {
+      this.historyList = searchModel.getSearchHistorySync()
+    }
+
+    /**
+     * 重置页面为初始状态
+     */
+    resetState() {
+      this.showBookList = true
+      this.showSearchResult = false
+      this.serachResult = []
+      this.isPlayLoading = false
     }
   }
 </script>

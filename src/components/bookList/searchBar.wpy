@@ -1,0 +1,154 @@
+<style lang='scss' scoped>
+@import '../assets/styles/transition';
+
+.search-input-container {
+  height: 54px;
+  background-color: #fff;
+  padding: 0 15px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  height: 34px;
+  background-color: #f7f7f7;
+  border-radius: 17px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  justify-content: center;
+  .input {
+    margin-left: 10px;
+  }
+  .tip-text {
+    margin-left: 10px;
+    color: #999;
+  }
+  .full {
+    width: 100%;
+  }
+  .center {
+    width: 85px;
+  }
+  .iconfont {
+    color: #c7c7c7;
+    font-size: 20px;
+  }
+}
+
+.cancel-btn {
+  display: inline-block;
+  border-radius: 17px;
+  width: 60px;
+  height: 34px;
+  background-color: #fff;
+  border: 1px solid #b9b8b8;
+  padding: 0;
+  font-size: 14px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b9b8b8;
+  margin-left: 15px;
+  overflow: hidden;
+}
+
+.hidden {
+  width: 0;
+  opacity: 0;
+}
+
+.show {
+  width: 60px;
+  opacity: 1;
+}
+</style>
+
+<template>
+  <view class='search-input-container'>
+    <view class="input-wrapper"
+          @tap="onClickInput">
+      <view class="iconfont icon-search"></view>
+      <input wx:if="{{isEdit}}"
+             class="animation input {{isEdit ? 'full' : 'center'}}"
+             bindinput="onInput"
+             bindconfirm="onSearch"
+             type="text"
+             placeholder="搜索图书名称"
+             focus="true"
+             confirm-type="search" />
+      <text wx:else class="animation tip-text {{isEdit ? 'full' : 'center'}}">搜索图书名称</text>
+      <!-- 清空用户输入按钮        -->
+      <view class="iconfont icon-cancel"
+            @tap="clearInput"
+            hidden="{{!inputData}}"></view>
+    </view>
+    <view class="cancel-btn animation {{isEdit ? 'show te' : 'hidden'}}"
+          @tap="onCancel">取消</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    data = {
+      isEdit: false,
+      inputData: '',
+      hide: 'hide'
+    }
+
+    methods = {
+      onInput(e) {
+        this.inputData = e.detail.value
+      },
+
+      onSearch(e) {
+        // this.$emit('tapSearchBar', this.isEdit)
+        this.$emit('searchBook', e.detail.value)
+      },
+
+      clearInput() {},
+
+      onClickInput() {
+        if (this.isEdit) {
+          return
+        }
+        this.isEdit = true
+        this.$emit('tapSearchBar', this.isEdit)
+      },
+
+      onCancel() {
+        this.isEdit = false
+        this.$emit('tapSearchBar', this.isEdit)
+      }
+    }
+
+    // 隐藏取消按钮
+    hidden() {
+      // setTimeout(() => {
+      this.hide = 'hide'
+      // this.$apply()
+      // }, 400)
+      this.animation.opacity(0).step()
+      this.animation.width(0).step()
+      return this.animation.export()
+    }
+
+    // 显示取消按钮
+    show() {
+      this.hide = ''
+      this.animation.opacity(1).step()
+      this.animation.width(60).step()
+      return this.animation.export()
+    }
+  }
+</script>

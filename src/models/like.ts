@@ -1,9 +1,9 @@
-import { ClassicModel } from './classic'
+import ClassicModel from './classic'
 import { getLikeInfo } from '../api/like'
 
 const classicModel = new ClassicModel()
 
-export class LikeModel {
+export default class LikeModel {
   constructor() {}
 
   /**

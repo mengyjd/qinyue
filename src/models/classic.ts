@@ -1,7 +1,7 @@
 import { setStorage, getStorageSync } from '../utils/localStorage'
 import { getClassicLatest, recentClassic } from '../api/classic'
 
-export class ClassicModel {
+export default class ClassicModel {
   private CLASSIC_KEY_PREFIX = 'classic-'
 
   constructor() {}

@@ -3,8 +3,8 @@
   font-size: 18px;
   display: inline-block;
   .like-icon {
-    width: 16px;
-    height: 14px;
+    width: 16rpx;
+    height: 14rpx;
   }
   .liek-count {
     font-size: 9px;
@@ -29,7 +29,10 @@
   import wepy from 'wepy'
   export default class Like extends wepy.component {
     props = {
-      likeCount: Number,
+      likeCount: {
+        type: Number,
+        default: 0
+      },
       likeStatus: {
         type: Number,
         default: false
