@@ -1,0 +1,55 @@
+<style lang='scss' scoped>
+@import "../assets/styles/detail";
+
+.poster-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img {
+	width: 100px;
+	height: 150px;
+	box-shadow: 0px 3px 10px 0px rgba(171, 171, 171, 0.2);
+}
+
+.book-name {
+  font-size: 19px;
+  line-height: 20px;
+  color: #000000;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.author {
+  font-size: 14px;
+  line-height: 20px;
+  color: #999999;
+}
+</style>
+
+<template>
+  <view class='poster-container box'>
+    <image class="img" src="{{imgUrl}}"></image>
+    <text class="book-name">{{bookName}}</text>
+    <text class="author">{{authorText}}</text>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    props = {
+      imgUrl: String,
+      bookName: String,
+      author: []
+    }
+
+    computed = {
+      authorText() {
+        return this.author ? this.author.join() : ''
+      }
+    }
+  }
+</script>

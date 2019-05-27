@@ -1,0 +1,57 @@
+<style lang='scss' scoped>
+.book-list-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: #f9f9f9;
+}
+
+.brief-list {
+  margin-top: 64px;
+  background-color: #fff;
+}
+</style>
+
+<template>
+  <view hidden="{{hidden}}"
+        class="book-list-wrapper {{isBrief ? 'brief-list' : ''}}">
+    <repeat for="{{bookList}}"
+            key="book.id"
+            item="book">
+      <Book :book.sync="book"
+            :isBrief.sync="isBrief"
+            @tapBook.user="tapBook"></Book>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Book from './book'
+
+  export default class Index extends wepy.component {
+    props = {
+      bookList: [],
+      hidden: {
+        type: Boolean,
+        default: false
+      },
+      // 是否使用简洁模式 书单页为非简介模式,搜索结果页为简洁模式
+      isBrief: {
+        type: Boolean,
+        default: false
+      }
+    }
+
+    components = {
+      Book
+    }
+
+    methods = {
+      tapBook(id) {
+        this.$emit('tapBook', id)
+      }
+    }
+  }
+</script>

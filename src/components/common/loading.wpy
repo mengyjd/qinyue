@@ -1,0 +1,66 @@
+<style lang='scss' scoped>
+.cycle-wrapper {
+  position: relative;
+}
+.cycle-min {
+  z-index: 1;
+  background-color: #517bbf;
+  animation: scaleMin 0.5s linear infinite alternate;
+}
+
+.cycle-max {
+  background-color: #83a1d1;
+  animation: scaleMax 0.5s linear infinite alternate;
+}
+
+.cycle {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+@keyframes scaleMin {
+  from {
+    transform: scale(0, 0);
+  }
+  to {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes scaleMax {
+  from {
+    transform: scale(2, 2);
+  }
+  to {
+    transform: scale(1, 1);
+  }
+}
+</style>
+
+<template>
+  <view class='loading-container' >
+    <view class="cycle-wrapper">
+      <!-- 小圆 深色 -->
+      <view class="cycle-min cycle"></view>
+      <!-- 大圆 浅色 -->
+      <view class="cycle-max cycle"></view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    props = {
+      isPlaying: false
+    }
+  }
+</script>

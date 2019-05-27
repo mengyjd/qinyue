@@ -1,42 +1,149 @@
 <style lang='scss' scoped>
-  .music-cotainer {
-    flex-grow: 1;
-    display: flex;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-  }
-  .banner-img {
-    width: 420rpx;
-    height: 420rpx;
-    display: inline-block;
-    border-radius: 50%;
-    box-shadow: 0px 0px 1px 0px rgba(109, 109, 109, 0.15);
-  }
+@import '../assets/styles/classic';
+$rotationTime: 20s; // 音乐图片旋转一周的时间
+.music-img {
+  width: 420rpx;
+  height: 420rpx;
+  display: inline-block;
+  border-radius: 50%;
+  animation: rotate $rotationTime linear infinite;
+}
+.icon-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 120rpx;
+  height: 120rpx;
   .icon {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
     width: 120rpx;
     height: 120rpx;
   }
+}
+
+.play {
+  animation-play-state: running;
+}
+.pause {
+  animation-play-state: paused;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
 
 <template>
-  <view class='music-cotainer'>
-    <image class="banner-img" src="{{imageUrl}}"></image>
-    <image class="icon" src="../images/icons/play.png"></image>
+  <view class='wrapper'
+        hidden="{{h}}">
+    <view class="classic-img-container">
+      <image class="music-img {{playing ? 'play' : 'pause'}}"
+             src="{{imageUrl}}"></image>
+      <view class="icon-wrapper"
+            @tap="onTap">
+        <image class="icon"
+               src="{{musicControlIcon}}"></image>
+      </view>
+    </view>
+    <image class="tag"
+           src="../assets/images/icons/side_music.png"></image>
+    <text class="content">{{content}}</text>
   </view>
 </template>
 
-<script>
+<script >
   import wepy from 'wepy'
+
+  const backgroundAudioManager = wx.getBackgroundAudioManager()
+
   export default class Index extends wepy.component {
     props = {
-      imageUrl: String
+      imageUrl: String,
+      content: String,
+      musicUrl: String,
+      classicTitle: String,
+      currentPlayingUrl: ''
+    }
+
+    computed = {
+      playing() {
+        return this.imageUrl === this.currentPlayingUrl
+      },
+
+      musicControlIcon() {
+        const playIcon = '../components/assets/images/icons/play.png'
+        const pauseIcon = '../components/assets/images/icons/pause.png'
+        return this.playing ? pauseIcon : playIcon
+      },
+
+      // 歌手名，原生音频播放器中的分享功能，
+      // 分享出去的卡片简介，也将使用该值。
+      singer() {
+        if (!this.classicTitle) return ''
+        if (!this.classicTitle.match(/(.*) /)) return ''
+        return this.classicTitle.match(/(.*) /)[1]
+      },
+
+      // 歌名,音频标题，用于原生音频播放器音频标题（必填）。
+      // 原生音频播放器中的分享功能，分享出去的卡片标题，也将使用该值。
+      title() {
+        if (!this.classicTitle) return ''
+        if (!this.classicTitle.match(/《(.*)》/)) return ''
+        return this.classicTitle.match(/《(.*)》/)[1]
+      }
+    }
+
+    onLoad() {
+      this._monitorSwitch()
+    }
+
+    methods = {
+      onTap() {
+        if (this.playing) {
+          this.pauseMusic()
+        } else {
+          this.playMusic()
+        }
+      }
+    }
+
+    playMusic() {
+      backgroundAudioManager.title = this.title
+      backgroundAudioManager.singer = this.singer
+      backgroundAudioManager.coverImgUrl = this.imageUrl
+      // 设置了 src 之后会自动播放
+      backgroundAudioManager.src = this.musicUrl
+    }
+
+    pauseMusic() {
+      backgroundAudioManager.pause()
+    }
+
+    // 控制音乐播放的回调处理
+    _monitorSwitch() {
+      backgroundAudioManager.onPlay(() => {
+        this.currentPlayingUrl = this.imageUrl
+        this.$apply()
+      })
+      backgroundAudioManager.onStop(() => {
+        this.currentPlayingUrl = ''
+        this.$apply()
+      })
+      backgroundAudioManager.onPause(() => {
+        this.currentPlayingUrl = ''
+        this.$apply()
+      })
+      backgroundAudioManager.onEnded(() => {
+        this.currentPlayingUrl = ''
+        this.$apply()
+      })
     }
   }
 </script>

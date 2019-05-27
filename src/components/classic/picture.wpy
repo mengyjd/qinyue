@@ -1,26 +1,39 @@
 <style lang='scss' scoped>
-  .picture-cotainer {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .banner-img {
-    width: 100%;
-    height: 250px;
+@import '../assets/styles/classic';
+  .classic-img {
+    width: 750rpx;
+    height: 500rpx;
   }
 </style>
 
 <template>
-  <view class='picture-cotainer'>
-    <image class="banner-img" src="{{imageUrl}}"></image>
+  <view class='wrapper'>
+    <view class="classic-img-container">
+      <image class="classic-img" src="{{imageUrl}}"></image>
+    </view>
+    <image class="tag" src="{{tagImg}}"></image>
+    <text class="content">{{content}}</text>
   </view>
 </template>
 
-<script>
+<script lang="typescript">
   import wepy from 'wepy'
   export default class Index extends wepy.component {
     props = {
-      imageUrl: String
+      imageUrl: String,
+      content: String,
+      type: Number
+    }
+    computed = {
+      tagImg() {
+        const movieTag = '../components/assets/images/icons/side_movie.png'
+        const poemTag = '../components/assets/images/icons/side_poem.png'
+        if (this.type === 100) {
+          return movieTag
+        } else {
+          return poemTag
+        }
+      }
     }
   }
 </script>

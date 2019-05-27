@@ -1,0 +1,184 @@
+<style lang='scss' scoped>
+.comment-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.comment-wrapper {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  font-size: 14px;
+
+  .head {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    border-bottom: 1px solid #f9f9f9;
+  }
+
+  .content {
+    padding: 10px 15px;
+  }
+
+  .footer {
+    box-sizing: border-box;
+    padding: 10px 15px;
+    height: 44px;
+    background-color: #ffffff;
+    border: solid 1px #eeeeee;
+    display: flex;
+    align-items: center;
+
+    .input {
+      flex-grow: 1;
+      height: 28px;
+      border-radius: 14px;
+      background-color: #f5f5f5;
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+
+    .send-btn {
+      margin-left: 15px;
+    }
+  }
+}
+
+.placeholder-comment {
+  box-sizing: border-box;
+  padding: 0 15px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px -1px 8px 0px rgba(189, 189, 189, 0.2);
+
+  .placeholder-text {
+    color: #999;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+    height: 28px;
+    background-color: #ffffff;
+    border-radius: 14px;
+    border: solid 1px #000000;
+  }
+
+  .like {
+    margin-left: 30px;
+  }
+}
+</style>
+
+<template>
+  <view class="{{isEdit ? 'mask' : 'comment-container'}}">
+    <view class="comment-wrapper"
+          hidden="{{!isEdit}}">
+      <view class="head">
+        <text class="title">增加短评</text>
+        <text class="cancel-btn"
+              @tap="onCancel">取消</text>
+      </view>
+      <view class="content">
+        <CommentsWrapper :comments.sync="commentsShort"
+                         @tapComment.user="tapComment"></CommentsWrapper>
+      </view>
+      <view class="footer">
+        <input class="input"
+               type="text"
+               focus="true"
+               bindinput="onInput"
+               value="{{inputData}}"
+               placeholder="短评最多12字" />
+        <text class="send-btn"
+              @tap="send">发送</text>
+      </view>
+    </view>
+    <view class="comment-wrapper {{isEdit ? '' : 'placeholder-comment'}}"
+          @tap="enterEdit"
+          hidden="{{isEdit}}">
+      <text class="placeholder-text">输入短评</text>
+      <Like class="like"
+            :likeCount.sync="likeCount"
+            :likeStatus.sync="likeStatus"></Like>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import CommentsWrapper from './commentsWrapper'
+  import Like from './like'
+
+  export default class Index extends wepy.component {
+    props = {
+      comments: Array,
+      likeCount: Number,
+      likeStatus: Number
+    }
+
+    data = {
+      isEdit: false,
+      inputData: ''
+    }
+
+    components = {
+      CommentsWrapper,
+      Like
+    }
+
+    computed = {
+      commentsShort() {
+        return this.comments ? this.comments.slice(0, 3) : []
+      }
+    }
+
+    methods = {
+      enterEdit() {
+        this.isEdit = true
+      },
+
+      onCancel() {
+        this.resetState()
+      },
+
+      send() {
+        if (!this.inputData) return
+        this.$emit('sendComment', this.inputData)
+        this.resetState()
+      },
+
+      onInput(e) {
+        this.inputData = e.detail.value
+      },
+
+      tapComment(content) {
+        this.$emit('sendComment', content)
+        this.resetState()
+      }
+    }
+
+    /**
+     * 重置组件状态
+     */
+    resetState() {
+      this.isEdit = false
+      this.inputData = ''
+    }
+  }
+</script>

@@ -1,0 +1,41 @@
+<style lang='scss' scoped>
+</style>
+
+<template>
+  <view class='search-page-container'>
+    <historySearchList :title.sync="historyTitle"
+                       :listData.sync="historyList"
+                       @tapText.user="tapText"></historySearchList>
+    <hotSearchList :title.sync="hotTitle"
+                   :listData.sync="hotKeywords"
+                   @tapText.user="tapText"></hotSearchList>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import SearchList from './searchList'
+
+  export default class Index extends wepy.component {
+    props = {
+      historyList: Array,
+      hotKeywords: Array
+    }
+
+    components = {
+      historySearchList: SearchList,
+      hotSearchList: SearchList
+    }
+
+    data = {
+      historyTitle: '历史搜索',
+      hotTitle: '热门搜索'
+    }
+
+    methods = {
+      tapText(text) {
+        this.$emit('searchBook', { bookName: text })
+      }
+    }
+  }
+</script>

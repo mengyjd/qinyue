@@ -1,0 +1,64 @@
+<style lang='scss' scoped>
+@import "../assets/styles/detail";
+
+.title {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.row {
+  .right {
+    display: inline-block;
+    width: 50px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #999999;
+  }
+
+  .left {
+    font-size: 12px;
+    line-height: 20px;
+    color: #666666;
+  }
+}
+</style>
+
+<template>
+  <view class='book-info-container box'>
+    <text class="title">书本信息</text>
+    <view class="row">
+      <text class="right">出版社</text>
+      <text class="left">{{publisher}}</text>
+    </view>
+    <view class="row">
+      <text class="right">出版年</text>
+      <text class="left">{{pubdate}}</text>
+    </view>
+    <view class="row">
+      <text class="right">页数</text>
+      <text class="left">{{pages}}</text>
+    </view>
+    <view class="row">
+      <text class="right">价格</text>
+      <text class="left">{{price}}</text>
+    </view>
+    <view class="row">
+      <text class="right">装帧</text>
+      <text class="left">{{binding}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    props = {
+      publisher: String,
+      pubdate: String,
+      pages: String,
+      price: String,
+      binding: String
+    }
+  }
+</script>

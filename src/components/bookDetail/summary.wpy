@@ -1,0 +1,35 @@
+<style lang='scss' scoped>
+@import "../assets/styles/detail";
+
+.title {
+  display: block;
+  text-align: center;
+  margin-bottom: 15px;
+	font-size: 15px;
+	line-height: 20px;
+	color: #292929;
+}
+
+.content {
+	font-size: 14px;
+	line-height: 23px;
+	color: #666666;
+}
+</style>
+
+<template>
+  <view class='summary-container box'>
+    <text class="title">内容简介</text>
+    <text class="content">{{content}}</text>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    props = {
+      content: String
+    }
+  }
+</script>
