@@ -80,6 +80,7 @@
       <input wx:if="{{isEdit}}"
              class="animation input {{isEdit ? 'full' : 'center'}}"
              bindinput="onInput"
+             value="{{inputData}}"
              bindconfirm="onSearch"
              type="text"
              placeholder="搜索图书名称"
@@ -112,11 +113,12 @@
       },
 
       onSearch(e) {
-        // this.$emit('tapSearchBar', this.isEdit)
         this.$emit('searchBook', e.detail.value)
       },
 
-      clearInput() {},
+      clearInput() {
+        this.inputData = ''
+      },
 
       onClickInput() {
         if (this.isEdit) {
@@ -129,6 +131,7 @@
       onCancel() {
         this.isEdit = false
         this.$emit('tapSearchBar', this.isEdit)
+        this.inputData = ''
       }
     }
 

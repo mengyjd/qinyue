@@ -1,0 +1,55 @@
+<style lang='scss' scoped>
+.comments-wrapper {
+  background-color: #fff;
+}
+
+.comments-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
+  .comment {
+    margin: 5px;
+  }
+}
+
+.comment:nth-child(1) {
+  background-color: #fefadc;
+}
+
+.comment:nth-child(2) {
+  background-color: #edfafe;
+}
+</style>
+
+<template>
+  <view class="comments-wrapper">
+    <repeat for="{{comments}}"
+            key="comment.content"
+            item="comment">
+      <CommentText class="comment"
+                   :comment="comment"
+                   @onTap.user="tapComment"></CommentText>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import CommentText from './commentText'
+
+  export default class Index extends wepy.component {
+    props = {
+      comments: Array
+    }
+
+    components = {
+      CommentText
+    }
+
+    methods = {
+      tapComment(content) {
+        this.$emit('tapComment', content)
+      }
+    }
+  }
+</script>

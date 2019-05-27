@@ -1,0 +1,48 @@
+<style lang='scss' scoped>
+.comment {
+  display: inline-block;
+  background-color: #f5f5f5;
+  .commetn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 7px;
+    .comment-text {
+      font-size: 14px;
+      color: #666666;
+    }
+    .comment-nums {
+      font-size: 12px;
+      color: #bbbbbb;
+      margin-left: 3px;
+    }
+  }
+}
+</style>
+
+<template>
+  <view class='comment'
+        @tap="onTap">
+    <view class="commetn-wrapper">
+      <text class="comment-text">{{comment.content}}</text>
+      <text class="comment-nums">+{{comment.nums}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    props = {
+      comment: Object
+    }
+
+    methods = {
+      onTap() {
+        if (!this.comment && !this.comment.content) return
+        this.$emit('onTap', this.comment.content)
+      }
+    }
+  }
+</script>

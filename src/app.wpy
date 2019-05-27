@@ -16,9 +16,10 @@
   export default class extends wepy.app {
     config = {
       pages: [
-        'pages/bookList',
         'pages/index',
-        'pages/myLike'
+        'pages/bookList',
+        'pages/myLike',
+        'pages/bookDetail'
       ],
       requiredBackgroundModes: ['audio'],
       window: {

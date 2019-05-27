@@ -66,7 +66,7 @@
 </style>
 
 <template>
-  <view class="book-container {{isBrief ? 'brief-container' : ''}}">
+  <view class="book-container {{isBrief ? 'brief-container' : ''}}" @tap="tapBook">
     <image class="cover {{isBrief ? 'brief-cover' : ''}}"
            src="{{book.image}}"
            mode="scaleToFill"
@@ -93,5 +93,11 @@
         default: false
       }
     }
-}
+
+    methods = {
+      tapBook() {
+        this.$emit('tapBook', this.book.id)
+      }
+    }
+  }
 </script>

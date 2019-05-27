@@ -76,9 +76,11 @@
     <!-- 书籍列表 -->
     <view>
       <BookList :bookList.sync="books"
+                @tapBook.user="tapBook"
                 wx:if="{{showBookList}}"></BookList>
       <SearchBookList :bookList.sync="serachResult"
                       :isBrief.sync="isBrief"
+                      @tapBook.user="tapBook"
                       wx:if="{{showSearchResult}}"></SearchBookList>
     </view>
     <view class="loading-wrapper  {{isPullUpLoading ? 'pull-up-loading' : ''}}"
@@ -102,10 +104,6 @@
   const searchModel = new SearchModel()
 
   export default class Index extends wepy.page {
-    config = {
-      enablePullDownRefresh: true
-    }
-
     components = {
       SearchBar,
       SearchInputPage,
@@ -137,13 +135,13 @@
       }
     }
 
-    async onLoad() {
+    onLoad() {
       this.getFeatureBooks()
       this.getHotSearchList()
       this.getSearchHistoryList()
     }
 
-    // 用户触发上拉事件
+    // 上拉继续加载,只在搜索结果页有效
     onReachBottom() {
       if (!this.showSearchResult || this.isCompeleted || !this.ablePullDown) {
         return
@@ -167,6 +165,13 @@
       },
 
       /**
+       * 点击书籍,跳转页面
+       */
+      tapBook(id) {
+        wepy.navigateTo({ url: `./bookDetail?id=${id}` })
+      },
+
+      /**
        * 搜索书籍
        */
       async searchBook(options) {
@@ -185,8 +190,9 @@
       }
     }
 
-    async continueSearch() {}
-
+    /**
+     * 获取精选书籍
+    */
     async getFeatureBooks() {
       this.isPlayLoading = true
       const data = await bookModel.getFeatureBooks()
@@ -195,6 +201,9 @@
       this.$apply()
     }
 
+    /**
+     * 获取搜索历史
+    */
     async getHotSearchList() {
       this.hotKeywords = await searchModel.getHotSearchKeywords()
       this.$apply()
