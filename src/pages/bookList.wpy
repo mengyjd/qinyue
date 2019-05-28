@@ -50,6 +50,16 @@
   width: 100%;
   height: 55px;
 }
+
+.search-empty-tip-wrapper {
+  position: absolute;
+  margin-top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
 </style>
 
 <template>
@@ -78,10 +88,16 @@
       <BookList :bookList.sync="books"
                 @tapBook.user="tapBook"
                 wx:if="{{showBookList}}"></BookList>
+      <!-- 搜索结果列表 -->
       <SearchBookList :bookList.sync="serachResult"
                       :isBrief.sync="isBrief"
                       @tapBook.user="tapBook"
+                      :hideSearchEmpty.sync="total"
                       wx:if="{{showSearchResult}}"></SearchBookList>
+      <view class="search-empty-tip-wrapper"
+            wx:if="{{showSearchEmpty}}">
+        <text class="tip-text">搜索结果为空</text>
+      </view>
     </view>
     <view class="loading-wrapper  {{isPullUpLoading ? 'pull-up-loading' : ''}}"
           wx:if="{{isPlayLoading}}">
@@ -125,7 +141,8 @@
       start: 0, // 上拉加载时查询记录的起始位置
       total: 0, // 所有的搜索结果数,
       keyword: '', // 搜索关键词
-      ablePullDown: false // 能否执行上拉加载动作,取到数据后为true
+      ablePullDown: false, // 能否执行上拉加载动作,取到数据后为true
+      showSearchEmpty: false
     }
 
     computed = {
@@ -186,13 +203,14 @@
         this.keyword = options.bookName
         this.ablePullDown = true
         this.isPullUpLoading = false
+        this.showSearchEmpty = !data.total
         this.$apply()
       }
     }
 
     /**
      * 获取精选书籍
-    */
+     */
     async getFeatureBooks() {
       this.isPlayLoading = true
       const data = await bookModel.getFeatureBooks()
@@ -203,7 +221,7 @@
 
     /**
      * 获取搜索历史
-    */
+     */
     async getHotSearchList() {
       this.hotKeywords = await searchModel.getHotSearchKeywords()
       this.$apply()

@@ -32,7 +32,10 @@
 
   export default class Index extends wepy.component {
     props = {
-      bookList: [],
+      bookList: {
+        type: Array,
+        default: []
+      },
       hidden: {
         type: Boolean,
         default: false
@@ -41,6 +44,10 @@
       isBrief: {
         type: Boolean,
         default: false
+      },
+      hideSearchEmpty: {
+        type: Number,
+        default: true
       }
     }
 
