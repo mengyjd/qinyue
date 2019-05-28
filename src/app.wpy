@@ -1,14 +1,12 @@
 <style lang="scss">
-  @import './assets/styles/global';
-  @import './assets/styles/iconfonts/iconfont';
+@import './assets/styles/global';
+@import './assets/styles/iconfonts/iconfont';
 </style>
 
-<script lang="typescript">
+<script>
   import wepy from 'wepy'
   import 'wepy-async-function'
-  import {
-    setStore
-  } from 'wepy-redux'
+  import { setStore } from 'wepy-redux'
   import configStore from './store/index'
 
   const store = configStore()
@@ -16,63 +14,55 @@
   export default class extends wepy.app {
     config = {
       pages: [
+        'pages/myLike',
         'pages/index',
         'pages/bookList',
-        'pages/myLike',
         'pages/bookDetail'
       ],
+
       requiredBackgroundModes: ['audio'],
+
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: '轻阅',
         navigationBarTextStyle: 'black'
       },
+
       tabBar: {
         color: '#c7c7c7',
         selectedColor: '#000',
-        list: [{
-          pagePath: 'pages/index',
-          text: '流行',
-          iconPath: './assets/images/icon/classic.png',
-          selectedIconPath: './assets/images/icon/classic@highlight.png'
-        },
-        {
-          pagePath: 'pages/bookList',
-          text: '书单',
-          iconPath: './assets/images/icon/book.png',
-          selectedIconPath: './assets/images/icon/book@highlight.png'
-        },
-        {
-          pagePath: 'pages/myLike',
-          text: '喜欢',
-          iconPath: './assets/images/icon/my.png',
-          selectedIconPath: './assets/images/icon/my@highlight.png'
-        }
+        list: [
+          {
+            pagePath: 'pages/index',
+            text: '流行',
+            iconPath: './assets/images/icon/classic.png',
+            selectedIconPath: './assets/images/icon/classic@highlight.png'
+          },
+          {
+            pagePath: 'pages/bookList',
+            text: '书单',
+            iconPath: './assets/images/icon/book.png',
+            selectedIconPath: './assets/images/icon/book@highlight.png'
+          },
+          {
+            pagePath: 'pages/myLike',
+            text: '喜欢',
+            iconPath: './assets/images/icon/my.png',
+            selectedIconPath: './assets/images/icon/my@highlight.png'
+          }
         ]
       }
     }
+
     globalData = {
       userInfo: null
     }
+
     constructor() {
       super()
       this.use('requestfix')
       this.use('promisify')
-    }
-
-    getUserInfo(cb) {
-      const that = this
-      if (this.globalData.userInfo) {
-        return this.globalData.userInfo
-      }
-
-      wepy.getUserInfo({
-        success(res) {
-          that.globalData.userInfo = res.userInfo
-          cb && cb(res.userInfo)
-        }
-      })
     }
   }
 </script>

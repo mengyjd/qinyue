@@ -1,4 +1,11 @@
-import { getFeatureBooks, bookDetail, shortComment, bookFavor, addShortComment } from '../api/book'
+import {
+  getFeatureBooks,
+  bookDetail,
+  shortComment,
+  bookFavor,
+  addShortComment,
+  bookFavorCount
+} from '../api/book'
 
 export default class BookModel {
   constructor() {}
@@ -35,12 +42,19 @@ export default class BookModel {
   }
 
   /**
+   * 获取喜欢书籍的数量
+   */
+  getBookFavorCount() {
+    return bookFavorCount()
+  }
+
+  /**
    * 添加书籍短评
    * @param id 书籍ID
    * @param content 评论内容,最多12个字
    */
   addShortComment(id: number, content: string) {
-    if(content.length > 12) {
+    if (content.length > 12) {
       throw new Error('短评字数超出限制,最多12个字')
     }
     return addShortComment(id, content)

@@ -1,27 +1,84 @@
 <style lang='scss' scoped>
+.mylike-container {
+  background-color: #f5f5f5;
+  min-height: 100%;
+}
 
+.tag {
+  text-align: center;
+  padding-top: 15px;
+  .tag-img {
+    width: 50px;
+    height: 20px;
+  }
+}
+
+.classic-favor-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 15px;
+
+  .preview {
+    margin-bottom: 15px;
+  }
+}
 </style>
 
 <template>
-  <view class=''>
-    喜欢
+  <view class='mylike-container'>
+    <User :bookFavorCount.sync="bookFavorCount"></User>
+    <view class="tag">
+      <image class="tag-img"
+             src="../components/assets/images/icons/like_tag.png"></image>
+    </view>
+    <viwe class="classic-favor-list">
+      <repeat for="{{classicFavors}}"
+              key="index"
+              index="index"
+              item="classic">
+        <Preview class="preview"
+                 :classic.sync="classic"
+                 :likeCount.sync="classic.fav_nums"></Preview>
+      </repeat>
+    </viwe>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import User from '../components/mylike/user'
+  import Preview from '../components/mylike/preview'
+  import BookModel from '../models/book'
+  import ClassicModel from '../models/classic'
+
+  const bookModel = new BookModel()
+  const classicModel = new ClassicModel()
 
   export default class Index extends wepy.page {
     components = {
+      User,
+      Preview
     }
 
     data = {
+      bookFavorCount: 0,
+      classicFavors: [],
+      test: 1234
     }
 
-    computed = {
+    onLoad() {
+      this.getData()
     }
 
-    methods = {
+    async getData() {
+      const [favorCount, classicFavor] = await Promise.all([
+        bookModel.getBookFavorCount(),
+        classicModel.getClassicFavor()
+      ])
+      this.bookFavorCount = favorCount.count
+      this.classicFavors = classicFavor
+      this.$apply()
     }
   }
 </script>

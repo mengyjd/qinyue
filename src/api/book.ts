@@ -50,3 +50,11 @@ export function addShortComment(id: number, content: string) {
   })
 }
 
+/**
+ * 获取喜欢书籍的数量
+ */
+export function bookFavorCount() {
+  return request({
+    url: '/book/favor/count'
+  })
+}

@@ -1,5 +1,5 @@
 import { setStorage, getStorageSync } from '../utils/localStorage'
-import { getClassicLatest, recentClassic } from '../api/classic'
+import { getClassicLatest, recentClassic, classicFavor } from '../api/classic'
 
 export default class ClassicModel {
   private CLASSIC_KEY_PREFIX = 'classic-'
@@ -35,6 +35,14 @@ export default class ClassicModel {
     }
 
     return data
+  }
+
+  /**
+   * 获取我喜欢的期刊
+   * @param {number} start 开始的页数,默认为1
+   */
+  async getClassicFavor(start?: number) {
+    return classicFavor(start)
   }
 
   /**

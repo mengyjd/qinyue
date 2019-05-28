@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  globals: { wx: true },
+  globals: { wx: true, getApp: true },
   parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module'
@@ -27,6 +27,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'space-before-function-paren': 0,
     'no-trailing-spaces': 0,
-    'camelcase': 0
+    'camelcase': 0,
+    'comma-dangle': 0,
   }
 }

@@ -1,0 +1,114 @@
+<style lang='scss' scoped>
+.preview-container {
+  width: 165px;
+  height: 235px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 12px;
+
+  .text {
+    padding: 3px 5px;
+    background-color: #f7f7f7;
+    color: #0f0f0f;
+  }
+  .liek-count {
+    color: #bbbbbb;
+  }
+}
+
+.img-wrapper {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .img {
+    width: 100%;
+    height: 100%;
+  }
+  .cycle-img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.desc {
+  font-size: 14px;
+  padding: 0 10px;
+  color: #999;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .desc-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+}
+</style>
+
+<template>
+  <view class='preview-container'>
+    <view class="title">
+      <text class="text">{{typeText[classic.type]}}</text>
+      <text class="liek-count">{{classic.fav_nums}} 喜欢</text>
+    </view>
+    <view class="img-wrapper">
+      <image class="img {{classic.type == 200 ? 'cycle-img' : ''}}"
+             src="{{classic.image}}"></image>
+    </view>
+    <view class="desc">
+      <text class="desc-text">{{classic.content}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Like from '../common/like'
+
+  export default class Index extends wepy.component {
+    props = {
+      classic: Object
+    }
+
+    components = {
+      Like
+    }
+
+    data = {
+      typeText: {
+        100: '电影',
+        200: '诗句',
+        300: '句子'
+      }
+    }
+
+    methods = {
+      handleClick(e) {
+        // 改变likeCount数量
+        if (this.likeStatus) {
+          this.likeCount -= 1
+        } else {
+          this.likeCount += 1
+        }
+        console.log(this.likeCount)
+        this.likeStatus = !this.likeStatus
+        this.$emit('clickLike', this.likeStatus)
+      }
+    }
+  }
+</script>
