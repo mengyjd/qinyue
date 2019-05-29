@@ -22,12 +22,8 @@ npm run build
 
 ## 预览图
 
-![index](https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/index.png)
-
-![book_list](https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/book_list.png)
-
-![mylike](https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/mylike.png)
-
-![detail](https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/detail.png)
-
-![search](https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/search.png)
+<img src="https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/index.png" width="375" alt="index" />
+<img src="https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/book_list.png" width="375" alt="book_list" />
+<img src="https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/mylike.png" width="375" alt="mylike" />
+<img src="https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/detail.png" width="375" alt="detail" />
+<img src="https://github.com/mengyjd/exhibitionImg/blob/master/qinyue/search.png" width="375" alt="search" />
