@@ -32,7 +32,7 @@
   </view>
 </template>
 
-<script lang="typescript">
+<script>
   import wepy from 'wepy'
   import TitleView from '../components/classic/titleView'
   import Picture from '../components/classic/picture'
@@ -128,7 +128,7 @@
 
       // 点击喜欢按钮时根据当前状态向服务器发送请求,喜欢或者取消喜欢
       // 并将结果保存到本地
-      async clickLike(likeStatus: boolean) {
+      async clickLike(likeStatus) {
         await like(likeStatus, this.id, this.type)
         await likeModel.updateLocalLikeState(this.index, this.id, this.type)
       }
@@ -137,7 +137,7 @@
     /**
      * 获取当前期刊的上一期或者下一期
      */
-    async updateClassic(nextOrPrevious: string) {
+    async updateClassic(nextOrPrevious) {
       const data = await classicModel.getRecentClassic(this.index, nextOrPrevious)
       this.classicData = data
       this.updateControlBtnState(data.index)
@@ -147,7 +147,7 @@
     /**
      *   改变  切换期刊按钮的状态 : 是否禁用
      */
-    updateControlBtnState(index: number) {
+    updateControlBtnState(index) {
       this.isFirst = index === this.firstClassicIndex
       this.isLast = index === this.lastClassicIndex
     }

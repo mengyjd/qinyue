@@ -1,6 +1,6 @@
 <style lang="scss">
 @import './assets/styles/global';
-@import './assets/styles/iconfonts/iconfont';
+@import './assets/styles/fontAwesome';
 </style>
 
 <script>
