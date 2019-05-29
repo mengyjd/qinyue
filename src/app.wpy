@@ -64,5 +64,29 @@
       this.use('requestfix')
       this.use('promisify')
     }
+
+    onLaunch() {
+      this.getUserInfo()
+    }
+
+    getUserInfo(cb) {
+      const that = this
+      if (this.globalData.userInfo) {
+        return this.globalData.userInfo
+      }
+      wx.getSetting({
+        success(res) {
+          // 如果用户已经授权,则直接获取用户信息
+          if (res.authSetting['scope.userInfo']) {
+            wx.getUserInfo({
+              success: function(userRes) {
+                that.globalData.userInfo = userRes.userInfo
+                cb && cb(userRes.userInfo)
+              }
+            })
+          }
+        }
+      })
+    }
   }
 </script>

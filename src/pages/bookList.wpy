@@ -179,6 +179,7 @@
           // 点击取消按钮时重置状态
           this.resetState()
         }
+        this.getSearchHistoryList()
       },
 
       /**

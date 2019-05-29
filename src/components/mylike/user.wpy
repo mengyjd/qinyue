@@ -1,51 +1,43 @@
 <style lang='scss' scoped>
+.btn {
+  padding: 0;
+}
+
 .user-container {
   position: relative;
-  height: 280px;
+  height: 284px;
 
   .bg {
-    position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-  }
-
-  .desc {
-    width: 100%;
-    position: absolute;
-    top: 125px;
-    left: 0;
-    z-index: 1;
   }
 }
 
 .avatar-container {
+  top: 125px;
+  position: absolute;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  .user-img-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-
-    .user-img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
   .user-name {
-    font-size: 17px;
-    line-height: 25px;
+    font-size: 16px;
     color: #000000;
   }
 }
 
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
 .footer {
-  margin-top: 10px;
+  position: absolute;
+  width: 100%;
+  bottom: 15px;
   display: flex;
   justify-content: space-around;
   .item-wrapper {
@@ -76,26 +68,32 @@
   <view class='user-container'>
     <image class="bg"
            src="../assets/images/like_bg.png"></image>
-    <view class="desc">
-      <view class="avatar-container">
-        <view class="user-img-wrapper">
-          <open-data class="user-img"
-                     type="userAvatarUrl"></open-data>
-        </view>
-
-        <open-data class="user-name"
-                   type="userNickName"
-                   lang="zh_CN"></open-data>
+    <view class="avatar-container">
+      <!-- 弹窗获取用户信息按钮 -->
+      <button wx:if="{{!userInfo}}"
+              class="btn avatar"
+              open-type="getUserInfo"
+              bindgetuserinfo="getUserInfo">
+        <image class="avatar"
+               src="../assets/images/icons/my.png">
+        </image>
+      </button>
+      <open-data wx:if="{{userInfo}}"
+                 class="avatar"
+                 type="userAvatarUrl"></open-data>
+      <open-data wx:if="{{userInfo}}"
+                 class="user-name"
+                 type="userNickName"
+                 lang="zh_CN"></open-data>
+    </view>
+    <view class="footer">
+      <view class="item-wrapper">
+        <view class="iconfont icon-about"></view>
+        <text class="text">关于我们</text>
       </view>
-      <view class="footer">
-        <view class="item-wrapper">
-          <view class="iconfont icon-about"></view>
-          <text class="text">关于我们</text>
-        </view>
-        <view class="item-wrapper">
-          <text class="num">{{bookFavorCount}}</text>
-          <text class="text">喜欢的书</text>
-        </view>
+      <view class="item-wrapper">
+        <text class="num">{{bookFavorCount}}</text>
+        <text class="text">喜欢的书</text>
       </view>
     </view>
   </view>
@@ -109,6 +107,27 @@
       bookFavorCount: {
         type: Number,
         default: 0
+      }
+    }
+
+    data = {
+      userInfo: null
+    }
+
+    onLoad() {
+      this.userInfo = this.$parent.$parent.getUserInfo()
+    }
+
+    methods = {
+      getUserInfo(e) {
+        if (e.detail.errMsg.match(/ok/)) {
+          this.$parent.$parent.globalData.userInfo = e.detail.userInfo
+          this.userInfo = e.detail.userInfo
+        } else {
+          this.$parent.$parent.globalData.userInfo = null
+          this.userInfo = null
+        }
+        this.$apply()
       }
     }
   }
